@@ -1,14 +1,14 @@
 # [Nome do Projeto]
 
 **Disciplina:** Introdução à Inteligência Artificial  
-**Semestre:** 2025.2  
+**Semestre:** 2026.1  
 **Semestre:** [Semestre]  
-**Professor:** [Nome do Professor]  
-**Turma:** [T03 / T04]
+**Professor:** ANDRE LUIS FONSECA FAUSTINO  
+**Turma:** [T03 / T04] 
 **Turma:** [T0X]
 
 ## Integrantes do Grupo
-* Nome Completo (Matrícula)
+* Marcus Vinicius de Oliveira (20250024670)
 * Nome Completo (Matrícula)
 * Nome Completo (Matrícula)
 * Nome Completo (Matrícula)
