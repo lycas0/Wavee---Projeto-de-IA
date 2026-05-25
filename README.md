@@ -9,13 +9,13 @@
 
 ## Integrantes do Grupo
 * Marcus Vinicius de Oliveira (20250024670)
-* Nome Completo (Matrícula)
+* Pedro Lucas Barbosa Nascimento (20250043522)
 * Nome Completo (Matrícula)
 * Nome Completo (Matrícula)
 * ...
 
 ## Descrição do Projeto
-[Descreva aqui em 1 ou 2 parágrafos a proposta do projeto e as tecnologias utilizadas para seu desenvolvimento]
+  O Wavee busca resolver a dificuldade do usuário em identificar e encontrar músicas a partir de trechos vagos, fonéticos ou imprecisos que ficaram gravados na memória. Utilizando Processamento de Linguagem Natural (NLP) e algoritmos probabilísticos, o sistema analisa os padrões lexicais, rítmicos e semânticos do texto inserido pelo usuário para calcular e exibir a probabilidade de a letra pertencer a determinados gêneros musicais, superando a limitação de plataformas tradicionais que não interpretam o contexto textual para sugerir estilos relevantes.
 
 ## Guia de Instalação e Execução
 [Descreva os passos para instalacao e execucao do projeto. Inclua um passo-a-passo claro de como utilizar a proposta desenvolvida. Veja o exemplo abaixo.]
