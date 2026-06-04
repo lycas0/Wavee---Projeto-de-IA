@@ -8,14 +8,15 @@
 **Turma:** [T0X]
 
 ## Integrantes do Grupo
+* Bianca Bezerra Pires (20240020515)
+* Estelita Fernanda Andre de Brito (20230072296)
 * Marcus Vinicius de Oliveira (20250024670)
 * Pedro Lucas Barbosa Nascimento (20250043522)
-* Nome Completo (Matrícula)
-* Nome Completo (Matrícula)
-* ...
 
 ## Descrição do Projeto
-  O Wavee busca resolver a dificuldade do usuário em identificar e encontrar músicas a partir de trechos vagos, fonéticos ou imprecisos que ficaram gravados na memória. O sistema analisa os padrões lexicais, rítmicos e semânticos do texto inserido pelo usuário para calcular e exibir a probabilidade de a letra pertencer a determinados gêneros musicais, superando a limitação de plataformas tradicionais que não interpretam o contexto textual para sugerir estilos relevantes.
+O Wavee é um agente inteligente probabilístico capaz de receber uma palavra, frase ou trecho textual fornecido pelo usuário e calcular a probabilidade de pertencimento dessa entrada a diferentes gêneros musicais. Com base nesse cálculo, o agente identifica o gênero com maior probabilidade e realiza recomendações de músicas relacionadas, buscando aproximar as sugestões dos interesses expressos pelo usuário.
+O sistema utiliza técnicas de classificação probabilística para transformar informações textuais em conhecimento útil para o processo de recomendação, permitindo que o usuário descubra novas músicas e artistas a partir de descrições simples ou palavras-chave.
+
 
 ## Guia de Instalação e Execução
 [Descreva os passos para instalacao e execucao do projeto. Inclua um passo-a-passo claro de como utilizar a proposta desenvolvida. Veja o exemplo abaixo.]
@@ -31,3 +32,30 @@ Se necessário, especifique a porta ou url de acesso, ex: http://localhost:8501
 Se necessário, especifique a porta ou url de acesso, ex.: http://localhost:8501
 
 ## Estrutura dos Arquivos
+
+wavee-project/
+│
+├── data/                  # Banco de dados local  
+│
+├── src/                   # Código fonte do projeto
+│   │
+│   ├── models/            # Entidades puras (Música, Artista, Gênero)
+│   │   ├── artista.py
+│   │   ├── genero.py
+│   │   └── musica.py
+│   │
+│   ├── repositories/      # Comunicação com o banco de dados
+│   │   └── historico_repositorio.py
+│   │
+│   ├── services/          # Consumo de APIs externas
+│   │   └── music_api_service.py
+│   │
+│   ├── agent/             # O CORAÇÃO DA IA
+│   │   ├── agente.py       # Classe Agente (contém o modelo probabilístico)
+│   │   └── cerebro_agente.py       # O algoritmo em si (ex: Naive Bayes, tabelas de probabilidade)
+│   │
+│   └── view/              # Interface Gráfica
+│       └── app_window.py  # Telas, botões e campos de texto
+│
+├── main.py                # Arquivo principal que inicializa e amarra tudo
+└── requirements.txt       # Bibliotecas necessárias 
