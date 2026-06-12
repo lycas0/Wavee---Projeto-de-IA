@@ -1,3 +1,4 @@
+from src.models.musica import musica
 #onde vai ficar a lógica da heuristica
 class Heuristica:
     def __init__(self, alfa = 0.6, beta = 0.4):
@@ -23,4 +24,15 @@ class Heuristica:
     
 #estou comentando tudo para não me perder no raciocinio 
 
-    
+    def calculo_final(self, musica: musica, palavra_pesquisada, base_conhecimento, rede_bayesiana):
+        
+        idMusica = musica.id
+        generoMusica = musica.genero
+
+        pesoHistorico = self.calcular_peso_historico(idMusica, palavra_pesquisada, base_conhecimento)
+
+        #pesoBayesiano = aqui vamos receber a probabilidade gerada pela rede bayesiana
+
+        #resultadoFinal = (self.alfa * pesoHistorico) + (self.beta * pesoBayesiano)
+
+        #return resultadoFinal
