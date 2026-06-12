@@ -31,8 +31,8 @@ class Heuristica:
 
         pesoHistorico = self.calcular_peso_historico(idMusica, palavra_pesquisada, base_conhecimento)
 
-        #pesoBayesiano = aqui vamos receber a probabilidade gerada pela rede bayesiana
+        pesoBayesiano = rede_bayesiana.get(genero_musica, 0.0)
 
-        #resultadoFinal = (self.alfa * pesoHistorico) + (self.beta * pesoBayesiano)
+        resultadoFinal = (self.alfa * pesoHistorico) + (self.beta * pesoBayesiano)
 
-        #return resultadoFinal
+        return resultadoFinal
