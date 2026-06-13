@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 
+from src.agent.agente import Agente
+
 
 class AppWindow:
 
@@ -10,13 +12,16 @@ class AppWindow:
         # cria a janela principal da aplicação
         self.janela = tk.Tk()
 
+        # cria o agente inteligente
+        self.agente = Agente()
+
         self.janela.title("Wavee")
 
-        # tamanho inicial da janela
+        # tamanho da janela
         self.janela.geometry("800x700")
 
-        # cor de fundo inspirada na identidade visual
-        self.janela.configure(bg="#0f1117")
+        # cor extraída do fundo da logo
+        self.janela.configure(bg="#0C0C0E")
 
         self.criar_componentes()
 
@@ -33,42 +38,30 @@ class AppWindow:
         logo_label = tk.Label(
             self.janela,
             image=self.logo,
-            bg="#0f1117"
+            bg="#0C0C0E"
         )
 
-        logo_label.pack(pady=10)
+        logo_label.pack(pady=(20, 5))
 
-        # título
-
-        titulo = tk.Label(
-            self.janela,
-            text="Seu assistente musical inteligente",
-            font=("Arial", 14, "bold"),
-            bg="#0f1117",
-            fg="#65f0c4"
-        )
-
-        titulo.pack()
-
-        # subtítulo
+        # slogan
 
         subtitulo = tk.Label(
             self.janela,
-            text="Descubra músicas com Inteligência Artificial",
-            font=("Arial", 10),
-            bg="#0f1117",
-            fg="white"
+            text="O agente inteligente que entende seu ritmo",
+            font=("Arial", 12),
+            bg="#0C0C0E",
+            fg="#9CEACD"
         )
 
-        subtitulo.pack(pady=(0, 20))
+        subtitulo.pack(pady=(0, 30))
 
         # instrução
 
         instrucao = tk.Label(
             self.janela,
-            text="Digite uma letra de música ou descreva seu gosto musical:",
+            text="Digite uma letra de música ou descreva seu gosto musical",
             font=("Arial", 11),
-            bg="#0f1117",
+            bg="#0C0C0E",
             fg="white"
         )
 
@@ -78,12 +71,13 @@ class AppWindow:
 
         self.campo_texto = tk.Text(
             self.janela,
-            height=6,
-            width=60,
-            font=("Arial", 11)
+            height=5,
+            width=55,
+            font=("Arial", 11),
+            relief="flat"
         )
 
-        self.campo_texto.pack(pady=10)
+        self.campo_texto.pack(pady=15)
 
         # botão de busca
 
@@ -91,32 +85,60 @@ class AppWindow:
             self.janela,
             text="Buscar",
             command=self.buscar,
-            bg="#65f0c4",
-            font=("Arial", 11, "bold")
+            bg="#9CEACD",
+            fg="#0C0C0E",
+            font=("Arial", 11, "bold"),
+            padx=15,
+            pady=5,
+            borderwidth=0
         )
 
         botao.pack(pady=10)
+
+        # separador
+
+        separador = tk.Frame(
+            self.janela,
+            bg="#2A2A2D",
+            height=2,
+            width=500
+        )
+
+        separador.pack(pady=25)
 
         # resultado
 
         self.resultado = tk.Label(
             self.janela,
-            text="",
-            font=("Arial", 12),
-            bg="#0f1117",
+            text="🎧 Gênero identificado:",
+            font=("Arial", 13, "bold"),
+            bg="#0C0C0E",
             fg="white"
         )
 
-        self.resultado.pack(pady=20)
+        self.resultado.pack()
+
+        # recomendações
+
+        self.recomendacoes = tk.Label(
+            self.janela,
+            text="",
+            font=("Arial", 11),
+            bg="#0C0C0E",
+            fg="white",
+            justify="left"
+        )
+
+        self.recomendacoes.pack(pady=15)
 
     def buscar(self):
 
         texto = self.campo_texto.get(
             "1.0",
             tk.END
-        )
+        ).strip()
 
-        if not texto.strip():
+        if not texto:
 
             messagebox.showwarning(
                 "Aviso",
@@ -125,14 +147,37 @@ class AppWindow:
 
             return
 
-        # placeholder temporário
-        # aqui será integrada a rede bayesiana
+        try:
 
-        genero = "Rock"
+            resultado = self.agente.agir(texto)
 
-        self.resultado.config(
-            text=f"Gênero identificado: {genero}"
-        )
+            genero = resultado["genero"]
+
+            musicas = resultado["musicas"]
+
+            self.resultado.config(
+                text=f"🎧 Gênero identificado: {genero}"
+            )
+
+            texto_musicas = "🎵 Músicas recomendadas:\n\n"
+
+            for musica in musicas:
+
+                texto_musicas += (
+                    f"• {musica.nome} "
+                    f"({musica.cantor})\n"
+                )
+
+            self.recomendacoes.config(
+                text=texto_musicas
+            )
+
+        except Exception as erro:
+
+            messagebox.showerror(
+                "Erro",
+                f"Ocorreu um erro:\n\n{erro}"
+            )
 
     def executar(self):
 
