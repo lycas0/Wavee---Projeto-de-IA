@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS musicas (
     ano         INTEGER,
     duracao_seg INTEGER,                         
     url_preview TEXT                             
-
+);
 
 CREATE TABLE IF NOT EXISTS associacoes_aprendidas (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
