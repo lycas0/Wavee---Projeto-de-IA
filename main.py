@@ -38,7 +38,7 @@ def main():
         #usando a função registrar_feedback na main
         if musicas_recomendadas:
             try:
-                escolha = int(input("Digite o número da música que você deseja ouvir, ou digite 0: ").strip())
+                escolha = int(input("Digite o número da música que você deseja ouvir, ou digite 0 se não deseja ouvir nenhuma: ").strip())
 
                 if 1 <= escolha <= len(musicas_recomendadas):
                     musica_escolhida = musicas_recomendadas[escolha - 1] 
