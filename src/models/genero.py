@@ -3,3 +3,6 @@ class genero:
         self.id = id
         self.nome = nome
         self.descricao = descricao
+
+    def __repr__(self):
+        return f"<genero {self.nome}>"
