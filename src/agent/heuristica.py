@@ -2,13 +2,19 @@ from src.models.musica import musica
 #onde vai ficar a lógica da heuristica
 class Heuristica:
     def __init__(self, alfa = 0.6, beta = 0.4):
-        #aqui vai estar os pesos da nossa busca, que nesse caso vai ser o alfa = peso_historico e beta = peso_rede_bayesiana
-        #o peso alfa tem mais valor pois se uma determinada palavra é muito associada a uma música X, sempre que essa palavra estiver na pesquisa do usuário a música X tem maiores probabilidades de ser a música desejada e assim o gênero musical dessa música é consequentemente o mais provavel
+        # alfa = peso do histórico de cliques
+        # beta = peso da probabilidade da rede bayesiana
+        # alfa é maior pois, se uma palavra está fortemente associada
+        # a uma música X no histórico, X tem alta chance de ser a
+        # resposta desejada, e o gênero de X é consequentemente o mais provável.
         self.alfa = alfa
         self.beta = beta
 
     def calcular_peso_historico(self, musica_id, palavra_pesquisada, base_conhecimento): #a base conhecimento é onde vai estar guardado o historico de aprendizado, ou seja, onde vai estar guardado a relação da palavra com a letra/genero X baseado no historico de click
-
+        """
+        base_conhecimento: dict {palavra: {musica_id: cliques}}
+        Retorna a proporção de cliques que essa música teve para essa palavra.
+        """
         if palavra_pesquisada not in base_conhecimento:
             return 0.0
         
@@ -19,20 +25,21 @@ class Heuristica:
             return 0.0
 
         click_musica = click_palavra.get(musica_id, 0) #aqui é a busca dos clicks na música após a pesquisa do usuario 
-
         return click_musica / total_click #vamos retorna a proporção que a música tem com aquela palavra 
     
 #estou comentando tudo para não me perder no raciocinio 
 
-    def calculo_final(self, musica: musica, palavra_pesquisada, base_conhecimento, rede_bayesiana):
-        
-        idMusica = musica.id
-        generoMusica = musica.genero
+    def calculo_final(self, musica, palavra_pesquisada, base_conhecimento, probabilidades_genero):
+        """
+        musica: instância de musica
+        palavra_pesquisada: string usada na busca
+        base_conhecimento: dict {palavra: {musica_id: cliques}}
+        probabilidades_genero: dict {genero: probabilidade}, vindo da RedeBayesiana
+        """
+        peso_historico = self.calcular_peso_historico(
+            musica.id, palavra_pesquisada, base_conhecimento
+        )
 
-        pesoHistorico = self.calcular_peso_historico(idMusica, palavra_pesquisada, base_conhecimento)
+        peso_bayesiano = probabilidades_genero.get(musica.genero, 0.0)
 
-        pesoBayesiano = rede_bayesiana.get(genero_musica, 0.0)
-
-        resultadoFinal = (self.alfa * pesoHistorico) + (self.beta * pesoBayesiano)
-
-        return resultadoFinal
+        return (self.alfa * peso_historico) + (self.beta * peso_bayesiano)
