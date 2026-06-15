@@ -159,18 +159,51 @@ class AppWindow:
                 text=f"🎧 Gênero identificado: {genero}"
             )
 
+            if hasattr(self, 'container_musicas'):
+                self.container_musicas.destroy()
+
+            self.container_musicas = tk.Frame(self.janela, bg="#0C0C0E")
+            self.container_musicas.pack(pady=10)
+
             texto_musicas = "🎵 Músicas recomendadas:\n\n"
 
             for musica in musicas:
 
-                texto_musicas += (
-                    f"• {musica.nome} "
-                    f"({musica.cantor})\n"
+                def registro_clique(m_id= musica.id, m_nome = musica.nome):
+                    self.agente.registrar_feedback(
+                        entrada_texto=texto,
+                        genero_nome=genero,
+                        musica_id=m_id,
+                        gostou=True
+                    )
+                    messagebox.showinfo("Wavee Play", f"Tocando: {m_nome}\n")
+
+                
+                botao_musica = tk.Button(
+                    self.container_musicas,
+                    text=f"🎵 {musica.nome} ({musica.cantor})",
+                    command=registro_clique, # Chama a função de feedback quando o usuário clicar
+                    bg="#1F1F23",
+                    fg="white",
+                    font=("Arial", 10),
+                    anchor="w",
+                    padx=10,
+                    pady=5,
+                    width=45,
+                    relief="flat"
                 )
 
-            self.recomendacoes.config(
-                text=texto_musicas
-            )
+                botao_musica.pack(pady=3)
+
+                #texto_musicas += (
+                    #f"• {musica.nome} "
+                    #f"({musica.cantor})\n"
+                #)
+
+            #self.recomendacoes.config(
+                #text=texto_musicas
+            #)
+            self.recomendacoes.config(text="")
 
         except Exception as erro:
 
