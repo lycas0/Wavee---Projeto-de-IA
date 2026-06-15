@@ -50,29 +50,21 @@ python main.py
 Wavee---Projeto-de-IA/
 │
 ├── assets/
+│   └── logo_wavee.png          # Logotipo da aplicação
+│
 ├── data/
+│   ├── init_db.py             # Script de criação e inicialização do banco
+│   └── wavee.db               # Banco de dados SQLite
 │
 ├── src/
-│   │
-│   ├── models/
-│   │   ├── artista.py
-│   │   ├── genero.py
-│   │   └── musica.py
-│   │
-│   ├── repositories/
-│   │   └── historico_repositorio.py
-│   │
-│   ├── agent/
-│   │   ├── agente.py
-│   │   ├── cerebro_agente.py
-│   │   ├── rede_bayesiana.py
-│   │   └── heuristica.py
-│   │
-│   └── view/
-│       └── app_window.py
+│   ├── agent/                 # Componentes de Inteligência Artificial
+│   ├── models/                # Entidades do sistema
+│   ├── repositories/          # Acesso e persistência de dados
+│   └── view/                  # Interface gráfica da aplicação
 │
-├── main.py
-└── requirements.txt
+├── main.py                    # Ponto de entrada do sistema
+├── requirements.txt           # Dependências do projeto
+└── README.md                  # Documentação do projeto
 ```
 
 ---
