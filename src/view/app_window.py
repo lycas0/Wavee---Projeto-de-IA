@@ -165,7 +165,7 @@ class AppWindow:
             self.container_musicas = tk.Frame(self.janela, bg="#0C0C0E")
             self.container_musicas.pack(pady=10)
 
-            texto_musicas = "🎵 Músicas recomendadas:\n\n"
+            #texto_musicas = "🎵 Músicas recomendadas:\n\n"
 
             for musica in musicas:
 
