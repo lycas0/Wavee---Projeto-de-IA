@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS palavras_chave (
     genero_id INTEGER NOT NULL REFERENCES generos(id) ON DELETE CASCADE,
     palavra   TEXT    NOT NULL,
     peso      REAL    NOT NULL DEFAULT 1.0       
-);
 
 CREATE TABLE IF NOT EXISTS artistas (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,26 +35,26 @@ CREATE TABLE IF NOT EXISTS musicas (
     album       TEXT,
     ano         INTEGER,
     duracao_seg INTEGER,                         
-    url_preview TEXT                             
+    url_preview TEXT                            
 );
 
 CREATE TABLE IF NOT EXISTS associacoes_aprendidas (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
-    termo          TEXT    NOT NULL,                  -- palavra ou expressão aprendida
+    termo          TEXT    NOT NULL,                  
     genero_id      INTEGER NOT NULL REFERENCES generos(id) ON DELETE CASCADE,
-    peso           REAL    NOT NULL DEFAULT 1.0,      -- força da associação (aumenta com feedback positivo)
-    ocorrencias    INTEGER NOT NULL DEFAULT 1,        -- quantas vezes esse termo gerou feedback positivo
-    ultima_vez     TEXT    NOT NULL DEFAULT (datetime('now')), -- última atualização
-    UNIQUE(termo, genero_id)                          -- um termo não se repete para o mesmo gênero
+    peso           REAL    NOT NULL DEFAULT 1.0,      
+    ocorrencias    INTEGER NOT NULL DEFAULT 1,        
+    ultima_vez     TEXT    NOT NULL DEFAULT (datetime('now')), 
+    UNIQUE(termo, genero_id)                         
 );
 
 CREATE TABLE IF NOT EXISTS historico (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    entrada_texto TEXT   NOT NULL,               -- texto que o usuário digitou
-    genero_id    INTEGER REFERENCES generos(id), -- gênero classificado pelo agente
-    musica_id    INTEGER REFERENCES musicas(id), -- música que foi recomendada
-    clicou       INTEGER NOT NULL DEFAULT 0,     -- 1 = clicou, 0 = ignorou
-    feedback     INTEGER,                        -- 1 = positivo, -1 = negativo, NULL = sem feedback
+    entrada_texto TEXT   NOT NULL,               
+    genero_id    INTEGER REFERENCES generos(id), 
+    musica_id    INTEGER REFERENCES musicas(id), 
+    clicou       INTEGER NOT NULL DEFAULT 0,     
+    feedback     INTEGER,                        
     criado_em    TEXT    NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -83,57 +82,89 @@ GENEROS = [
 ]
 
 PALAVRAS_CHAVE = [
-    ("Pop", "amor",        1.5), ("Pop", "dança",       1.3), ("Pop", "hit",         1.2),
-    ("Pop", "melodia",     1.2), ("Pop", "pop",         2.0), ("Pop", "radio",       1.1),
-    ("Pop", "coro",        1.0), ("Pop", "verão",       1.1), ("Pop", "festa",       1.2),
-    ("Pop", "romântico",   1.1),
-
-    ("Rock", "guitarra",   2.0), ("Rock", "bateria",    1.8), ("Rock", "rock",       2.0),
-    ("Rock", "banda",      1.3), ("Rock", "distorção",  1.5), ("Rock", "solo",       1.4),
-    ("Rock", "rebeldia",   1.2), ("Rock", "energia",    1.1), ("Rock", "pesado",     1.3),
-    ("Rock", "riff",       1.6),
-
-    ("Sertanejo", "sertanejo", 2.0), ("Sertanejo", "dupla",     1.8),
-    ("Sertanejo", "viola",     1.7), ("Sertanejo", "saudade",   1.4),
-    ("Sertanejo", "campo",     1.3), ("Sertanejo", "boiadeiro", 1.5),
-    ("Sertanejo", "coração",   1.1), ("Sertanejo", "country",   1.6),
-    ("Sertanejo", "interior",  1.2), ("Sertanejo", "fazenda",   1.4),
-
-    ("Funk", "funk",      2.0), ("Funk", "baile",     1.8), ("Funk", "batida",    1.6),
-    ("Funk", "favela",    1.4), ("Funk", "proibido",  1.3), ("Funk", "carioca",   1.5),
-    ("Funk", "ostentação",1.3), ("Funk", "mc",        1.7), ("Funk", "grave",     1.2),
-    ("Funk", "pancadão",  1.5),
-
-    ("MPB", "mpb",        2.0), ("MPB", "bossa",      1.8), ("MPB", "poesia",     1.7),
-    ("MPB", "brasil",     1.3), ("MPB", "violão",     1.5), ("MPB", "saudade",    1.2),
-    ("MPB", "voz",        1.1), ("MPB", "letra",      1.4), ("MPB", "clássico",   1.3),
-    ("MPB", "autoral",    1.5),
-
-    ("Hip-Hop", "rap",      2.0), ("Hip-Hop", "rima",     1.9), ("Hip-Hop", "flow",     1.8),
-    ("Hip-Hop", "beat",     1.6), ("Hip-Hop", "verso",    1.5), ("Hip-Hop", "sample",   1.4),
-    ("Hip-Hop", "periferia",1.5), ("Hip-Hop", "trap",     1.4), ("Hip-Hop", "freestyle",1.6),
-    ("Hip-Hop", "skate",    1.1),
-
-    ("Eletrônica", "eletrônico", 2.0), ("Eletrônica", "sintetizador", 1.8),
-    ("Eletrônica", "dj",         1.7), ("Eletrônica", "festival",     1.5),
-    ("Eletrônica", "drop",       1.6), ("Eletrônica", "loop",         1.4),
-    ("Eletrônica", "techno",     1.5), ("Eletrônica", "house",        1.5),
-    ("Eletrônica", "bass",       1.3), ("Eletrônica", "remix",        1.4),
-
-    ("Forró", "forró",      2.0), ("Forró", "sanfona",   1.9), ("Forró", "nordeste",  1.7),
-    ("Forró", "zabumba",    1.8), ("Forró", "triângulo", 1.7), ("Forró", "pé-de-serra",1.6),
-    ("Forró", "arrasta-pé", 1.5), ("Forró", "caatinga",  1.3), ("Forró", "xote",      1.6),
-    ("Forró", "baião",      1.7),
     
-    ("Pagode", "pagode",    2.0), ("Pagode", "samba",     1.8), ("Pagode", "pandeiro",  1.7),
-    ("Pagode", "cavaquinho",1.7), ("Pagode", "roda",      1.4), ("Pagode", "Rio",       1.2),
-    ("Pagode", "alegria",   1.2), ("Pagode", "boteco",    1.5), ("Pagode", "amizade",   1.1),
-    ("Pagode", "choro",     1.4),
-    
-    ("Metal", "metal",      2.0), ("Metal", "heavy",     1.8), ("Metal", "thrash",    1.7),
-    ("Metal", "death",      1.6), ("Metal", "power",     1.5), ("Metal", "riff",      1.6),
-    ("Metal", "breakdown",  1.5), ("Metal", "headbang",  1.4), ("Metal", "distorção", 1.4),
-    ("Metal", "vocal gutural", 1.7),
+    ("Pop", "amor",          1.5), ("Pop", "dança",         1.3), ("Pop", "hit",           1.2),
+    ("Pop", "melodia",       1.2), ("Pop", "pop",           2.0), ("Pop", "radio",         1.1),
+    ("Pop", "coro",          1.0), ("Pop", "verão",         1.1), ("Pop", "festa",         1.2),
+    ("Pop", "romântico",     1.1), ("Pop", "refrão",        1.3), ("Pop", "bonitinha",     1.2),
+    ("Pop", "crush",         1.3), ("Pop", "saudade",       1.1), ("Pop", "beijo",         1.3),
+    ("Pop", "feliz",         1.2), ("Pop", "coração partido",1.4),("Pop", "teen",          1.2),
+    ("Pop", "viral",         1.3), ("Pop", "ft",            1.0), ("Pop", "feat",          1.0),
+    ("Pop", "dancinha",      1.4), ("Pop", "trend",         1.3), ("Pop", "single",        1.1),
+    ("Rock", "guitarra",     2.0), ("Rock", "bateria",      1.8), ("Rock", "rock",         2.0),
+    ("Rock", "banda",        1.3), ("Rock", "distorção",    1.5), ("Rock", "solo",         1.4),
+    ("Rock", "rebeldia",     1.2), ("Rock", "energia",      1.1), ("Rock", "pesado",       1.3),
+    ("Rock", "riff",         1.6), ("Rock", "amplificador", 1.4), ("Rock", "headbang",     1.5),
+    ("Rock", "punk",         1.5), ("Rock", "grunge",       1.6), ("Rock", "hard rock",    1.7),
+    ("Rock", "progressivo",  1.4), ("Rock", "alternativo",  1.4), ("Rock", "vocal",        1.1),
+    ("Rock", "power chord",  1.5), ("Rock", "solo de guitarra",1.7),("Rock","barulho",     1.2),
+    ("Rock", "shows",        1.1), ("Rock", "palco",        1.1), ("Rock", "microfone",    1.0),
+    ("Sertanejo", "sertanejo",   2.0), ("Sertanejo", "dupla",       1.8),
+    ("Sertanejo", "viola",       1.7), ("Sertanejo", "saudade",     1.4),
+    ("Sertanejo", "campo",       1.3), ("Sertanejo", "boiadeiro",   1.5),
+    ("Sertanejo", "coração",     1.1), ("Sertanejo", "country",     1.6),
+    ("Sertanejo", "interior",    1.2), ("Sertanejo", "fazenda",     1.4),
+    ("Sertanejo", "peão",        1.5), ("Sertanejo", "cavalo",      1.4),
+    ("Sertanejo", "churrasco",   1.3), ("Sertanejo", "amor de roça",1.6),
+    ("Sertanejo", "universitário",1.6),("Sertanejo", "sofrência",   1.5),
+    ("Sertanejo", "traição",     1.4), ("Sertanejo", "modão",       1.5),
+    ("Sertanejo", "caipira",     1.5), ("Sertanejo", "pinga",       1.3),
+    ("Sertanejo", "boteco",      1.2), ("Sertanejo", "mágoa",       1.3),
+    ("Funk", "funk",         2.0), ("Funk", "baile",        1.8), ("Funk", "batida",       1.6),
+    ("Funk", "favela",       1.4), ("Funk", "proibido",     1.3), ("Funk", "carioca",      1.5),
+    ("Funk", "ostentação",   1.3), ("Funk", "mc",           1.7), ("Funk", "grave",        1.2),
+    ("Funk", "pancadão",     1.5), ("Funk", "rebola",       2.0), ("Funk", "bunda",        1.9),
+    ("Funk", "gostosa",      1.7), ("Funk", "putaria",      1.6), ("Funk", "noite",        1.2),
+    ("Funk", "passinho",     1.8), ("Funk", "twerk",        1.7), ("Funk", "medley",       1.3),
+    ("Funk", "bonde",        1.5), ("Funk", "gruda",        1.6), ("Funk", "desce",        1.7),
+    ("Funk", "soca",         1.6), ("Funk", "rebolado",     1.8), ("Funk", "dançar",       1.3),
+    ("Funk", "150 bpm",      1.4), ("Funk", "rave",         1.3), ("Funk", "surra",        1.4),
+    ("Funk", "kondzilla",    1.5), ("Funk", "baile funk",   2.0), ("Funk", "tatuagem",     1.2),
+    ("MPB", "mpb",           2.0), ("MPB", "bossa",         1.8), ("MPB", "poesia",        1.7),
+    ("MPB", "brasil",        1.3), ("MPB", "violão",        1.5), ("MPB", "saudade",       1.2),
+    ("MPB", "voz",           1.1), ("MPB", "letra",         1.4), ("MPB", "clássico",      1.3),
+    ("MPB", "autoral",       1.5), ("MPB", "tropicália",    1.8), ("MPB", "sambajazz",     1.7),
+    ("MPB", "delicado",      1.3), ("MPB", "intimista",     1.4), ("MPB", "popular",       1.1),
+    ("MPB", "arte",          1.2), ("MPB", "canção",        1.3), ("MPB", "bossa nova",    1.9),
+    ("MPB", "choro",         1.6), ("MPB", "compositor",    1.4), ("MPB", "minimalista",   1.3),
+    ("Hip-Hop", "rap",       2.0), ("Hip-Hop", "rima",      1.9), ("Hip-Hop", "flow",      1.8),
+    ("Hip-Hop", "beat",      1.6), ("Hip-Hop", "verso",     1.5), ("Hip-Hop", "sample",    1.4),
+    ("Hip-Hop", "periferia", 1.5), ("Hip-Hop", "trap",      1.4), ("Hip-Hop", "freestyle", 1.6),
+    ("Hip-Hop", "skate",     1.1), ("Hip-Hop", "rua",       1.4), ("Hip-Hop", "sistema",   1.3),
+    ("Hip-Hop", "consciência",1.5),("Hip-Hop", "letra pesada",1.6),("Hip-Hop","batidão",   1.5),
+    ("Hip-Hop", "cypher",    1.7), ("Hip-Hop", "quebrada",  1.5), ("Hip-Hop", "microfone", 1.3),
+    ("Hip-Hop", "drill",     1.5), ("Hip-Hop", "gangsta",   1.4), ("Hip-Hop", "swag",      1.3),
+    ("Eletrônica", "eletrônico",  2.0), ("Eletrônica", "sintetizador",  1.8),
+    ("Eletrônica", "dj",          1.7), ("Eletrônica", "festival",      1.5),
+    ("Eletrônica", "drop",        1.6), ("Eletrônica", "loop",          1.4),
+    ("Eletrônica", "techno",      1.5), ("Eletrônica", "house",         1.5),
+    ("Eletrônica", "bass",        1.3), ("Eletrônica", "remix",         1.4),
+    ("Eletrônica", "edm",         1.8), ("Eletrônica", "trance",        1.6),
+    ("Eletrônica", "dubstep",     1.6), ("Eletrônica", "bpm",           1.3),
+    ("Eletrônica", "clube",       1.4), ("Eletrônica", "pista",         1.4),
+    ("Eletrônica", "mixagem",     1.5), ("Eletrônica", "sample pad",    1.4),
+    ("Eletrônica", "kick",        1.3), ("Eletrônica", "wub",           1.5),
+    ("Forró", "forró",        2.0), ("Forró", "sanfona",      1.9), ("Forró", "nordeste",    1.7),
+    ("Forró", "zabumba",      1.8), ("Forró", "triângulo",    1.7), ("Forró", "pé-de-serra", 1.6),
+    ("Forró", "arrasta-pé",   1.5), ("Forró", "caatinga",     1.3), ("Forró", "xote",        1.6),
+    ("Forró", "baião",        1.7), ("Forró", "cangaço",      1.4), ("Forró", "vaquejada",   1.4),
+    ("Forró", "são joão",     1.8), ("Forró", "festa junina", 1.8), ("Forró", "quadrilha",   1.5),
+    ("Forró", "arrochado",    1.5), ("Forró", "luiz gonzaga", 1.6), ("Forró", "piseiro",      1.6),
+    ("Forró", "ceará",        1.3), ("Forró", "pernambuco",   1.3), ("Forró", "interior",     1.2),
+    ("Pagode", "pagode",      2.0), ("Pagode", "samba",       1.8), ("Pagode", "pandeiro",    1.7),
+    ("Pagode", "cavaquinho",  1.7), ("Pagode", "roda",        1.4), ("Pagode", "Rio",         1.2),
+    ("Pagode", "alegria",     1.2), ("Pagode", "boteco",      1.5), ("Pagode", "amizade",     1.1),
+    ("Pagode", "choro",       1.4), ("Pagode", "tamborim",    1.6), ("Pagode", "terreiro",    1.5),
+    ("Pagode", "cerveja",     1.3), ("Pagode", "domingo",     1.3), ("Pagode", "roda de samba",1.8),
+    ("Pagode", "suingue",     1.5), ("Pagode", "resenha",     1.4), ("Pagode", "raiz",        1.4),
+    ("Pagode", "saudade",     1.2), ("Pagode", "amor",        1.1), ("Pagode", "morena",      1.3),
+    ("Metal", "metal",        2.0), ("Metal", "heavy",        1.8), ("Metal", "thrash",       1.7),
+    ("Metal", "death",        1.6), ("Metal", "power",        1.5), ("Metal", "riff",         1.6),
+    ("Metal", "breakdown",    1.5), ("Metal", "headbang",     1.4), ("Metal", "distorção",    1.4),
+    ("Metal", "vocal gutural",1.7), ("Metal", "black metal",  1.8), ("Metal", "doom",         1.6),
+    ("Metal", "shred",        1.6), ("Metal", "double bass",  1.7), ("Metal", "blast beat",   1.7),
+    ("Metal", "dark",         1.3), ("Metal", "sombrio",      1.3), ("Metal", "agressivo",    1.4),
+    ("Metal", "sepultura",    1.5), ("Metal", "speed metal",  1.6), ("Metal", "moshing",      1.5),
 ]
 
 ARTISTAS = [
@@ -188,7 +219,9 @@ MUSICAS = [
 ]
 
 
+
 def popular_banco(cur: sqlite3.Cursor):
+    # Gêneros
     genero_ids: dict[str, int] = {}
     for nome, desc in GENEROS:
         cur.execute("INSERT OR IGNORE INTO generos (nome, descricao) VALUES (?,?)", (nome, desc))
@@ -217,10 +250,10 @@ def popular_banco(cur: sqlite3.Cursor):
             (titulo, artista_ids[a_nome], genero_ids[g_nome], album, ano, dur, url),
         )
 
-    print(f"  {len(GENEROS)} gêneros inseridos")
-    print(f"  {len(PALAVRAS_CHAVE)} palavras-chave inseridas")
-    print(f"  {len(ARTISTAS)} artistas inseridos")
-    print(f"  {len(MUSICAS)} músicas inseridas")
+    print(f"{len(GENEROS)} gêneros inseridos")
+    print(f"{len(PALAVRAS_CHAVE)} palavras-chave inseridas")
+    print(f"{len(ARTISTAS)} artistas inseridos")
+    print(f"{len(MUSICAS)} músicas inseridas")
 
 
 def main():
