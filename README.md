@@ -60,6 +60,7 @@ Wavee---Projeto-de-IA/
 │   ├── agent/                 # Componentes de Inteligência Artificial
 │   ├── models/                # Entidades do sistema
 │   ├── repositories/          # Acesso e persistência de dados
+|   ├── services/              # APIs externas 
 │   └── view/                  # Interface gráfica da aplicação
 │
 ├── main.py                    # Ponto de entrada do sistema
